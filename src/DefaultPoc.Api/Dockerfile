@@ -8,6 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/DefaultPoc.Api/DefaultPoc.Api.csproj", "src/DefaultPoc.Api/"]
+COPY ["src/DefaultPoc.Application/DefaultPoc.Application.csproj", "src/DefaultPoc.Application/"]
+COPY ["src/DefaultPoc.Domain/DefaultPoc.Domain.csproj", "src/DefaultPoc.Domain/"]
+COPY ["src/DefaultPoc.Infrastructure/DefaultPoc.Infrastructure.csproj", "src/DefaultPoc.Infrastructure/"]
 RUN dotnet restore "src/DefaultPoc.Api/DefaultPoc.Api.csproj"
 COPY . .
 WORKDIR "/src/src/DefaultPoc.Api"

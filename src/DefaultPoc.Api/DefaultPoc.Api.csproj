@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,6 +8,13 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <Content Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="9.0.0" />
@@ -20,10 +27,7 @@
     <ProjectReference Include="..\..\intern-packages\Notifications.MediatR\Notifications.MediatR.csproj" />
     <ProjectReference Include="..\DefaultPoc.Application\DefaultPoc.Application.csproj" />
     <ProjectReference Include="..\DefaultPoc.Domain\DefaultPoc.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
+    <ProjectReference Include="..\DefaultPoc.Infrastructure\DefaultPoc.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,13 +2,7 @@
 {
     public class Result
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="succeeded"></param>
-        /// <param name="data"></param>
-        /// <param name="errors"></param>
-        public Result(bool succeeded, object? data, IEnumerable<string>? errors = null)
+        private Result(bool succeeded, object? data, IEnumerable<string>? errors = null)
         {
             Succeeded = succeeded;
             Data = data;
@@ -20,30 +14,24 @@
         public IEnumerable<string>? Errors { get; }
 
         public static Result Success()
-        {
-            return new Result(true, default, Array.Empty<string>());
-        }
+            => new(true, default);
 
         public static Result Success(object data)
-        {
-            return new Result(true, data, Array.Empty<string>());
-        }
+            => new(true, data);
 
         public static Result Failure(IEnumerable<string> errors)
-        {
-            return new Result(false, default, errors);
-        }
+            => new(false, default, errors);
+
+        public static Result Failure(string error)
+            => new(false, default, new string[] { error });
+
+        public static Result Failure(IReadOnlyCollection<Notification> notifications)
+            => new(false, default, notifications.Select(x => x.Message));
     }
 
     public class Result<T>
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="succeeded"></param>
-        /// <param name="data"></param>
-        /// <param name="errors"></param>
-        public Result(bool succeeded, T? data, IEnumerable<string>? errors = null)
+        private Result(bool succeeded, T? data, IEnumerable<string>? errors = null)
         {
             Succeeded = succeeded;
             Data = data;
@@ -55,23 +43,18 @@
         public IEnumerable<string>? Errors { get; }
 
         public static Result<T> Success()
-        {
-            return new Result<T>(true, default, Array.Empty<string>());
-        }
+            => new(true, default);
 
         public static Result<T> Success(T data)
-        {
-            return new Result<T>(true, data, Array.Empty<string>());
-        }
+            => new(true, data);
+
+        public static Result<T> Failure(string error)
+            => new(false, default, new string[] { error });
 
         public static Result<T> Failure(IEnumerable<string> errors)
-        {
-            return new Result<T>(false, default, errors);
-        }
+            => new(false, default, errors);
 
         public static Result<T> Failure(IReadOnlyCollection<Notification> notifications)
-        {
-            return new Result<T>(false, default, notifications.Select(x => x.Message));
-        }
+            => new(false, default, notifications.Select(x => x.Message));
     }
 }

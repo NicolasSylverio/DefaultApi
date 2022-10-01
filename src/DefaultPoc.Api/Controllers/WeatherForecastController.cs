@@ -9,26 +9,20 @@ namespace DefaultPoc.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ApiBase
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly IMediator _mediator;
 
-        public WeatherForecastController
-        (
-            ILogger<WeatherForecastController> logger,
-            IMediator mediator
-        )
-        {
-            _mediator = mediator;
-        }
+        public WeatherForecastController(IMediator mediator) => _mediator = mediator;
 
         [HttpGet]
+        [ProducesResponseType(typeof(Result<WeatherForecast>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Result<WeatherForecast>), (int)HttpStatusCode.BadRequest)]
         public IEnumerable<WeatherForecast> GetAll()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -45,7 +39,7 @@ namespace DefaultPoc.Api.Controllers
         [ProducesResponseType(typeof(Result<WeatherForecast>), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<Result<WeatherForecast>>> Get([FromRoute] Guid id)
         {
-            var result = await _mediator.Send(new GetWeatherForecastQuery());
+            var result = await _mediator.Send(new GetWeatherForecastQuery(id));
 
             if (result.Succeeded)
                 return Ok(result);
